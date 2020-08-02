@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+
+        </title>
+    </head>
+    <body>
+        <button id="button">submit</button>
+        <div id="result"></div>
+
+
+
+<script src="JS/jquery-3.5.1.min.js"></script>
+<script>
+    $(function() {
+        $("#button").click(function(){
+            $.post("https://localhost:44398/api/payrequest",
+            {
+                "itemBody":"3333",
+                "subject":"222",
+                "totalAmount":"12",
+                "tradeno":"112"
+            },
+            function(data){
+                const div = document.createElement('div');
+                div.innerHTML = data;
+                document.body.appendChild(div);
+                document.forms[0].submit();
+            }
+            )
+        })
+    })
+</script>
+    </body>
+</html>
