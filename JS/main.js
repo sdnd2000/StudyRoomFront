@@ -103,13 +103,15 @@ $(function() {
               var cell = $('Cell').val();
               try{
                 $.each(SeatId,function(index,value){
-                  $.post("http://www.mrdeng.site/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"CustomerId":cell}).done (function(){
-                    alert ("订座成功"); 
+                  //$.post("http://www.mrdeng.site/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"CustomerId":cell}).done (function(){
+                $.post("https://localhost:44398/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"CustomerId":cell}).done (function(){  
+                  alert ("订座成功"); 
                   })
                   //console.log("index: "+index,"value: "+value);
                 })
-                $.post( "http://www.mrdeng.site/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
-                  const div = document.createElement('div');
+                //$.post( "http://www.mrdeng.site/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
+                $.post( "https://localhost:44398/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
+                const div = document.createElement('div');
                   div.innerHTML = data
                   document.body.appendChild(div);
                   document.forms[0].submit();
@@ -130,11 +132,7 @@ $(function() {
             }
             showDiv();
         })
-        /*$("body").on("click", "label", function(e) {
-            var getValue = $(this).attr("for");
-            var goToParent = $(this).parents(".select-size");
-            var getInputRadio = goToParent.find("input[id = " + getValue + "]");
-          });*/
+
 
           $("input[type='checkbox']").click(function(){
             if($(this).is(':checked')){
@@ -177,7 +175,8 @@ $(function() {
           }
 
           function getAvailability(start,end){
-              var seatAPI = "http://www.mrdeng.site/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
+              //var seatAPI = "http://www.mrdeng.site/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
+              var seatAPI = "https://localhost:44398/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
               $.get( seatAPI).done(function(data){
                 if($('#tab2').is(':visible')){
                   $.each(data,function(key,value){
