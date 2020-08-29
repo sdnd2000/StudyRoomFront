@@ -2,15 +2,13 @@ $(function(){
     var store = new DevExpress.data.CustomStore({
         key: "description",
         load: function() {
-           /*  var today = new Date();
-            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(); */
-            //return $.getJSON("https://localhost:44398/api/admin/?date="+date)
-            return $.getJSON("https://localhost:44398/api/admin/")
+            //return $.getJSON("https://localhost:44398/api/admin/")
+            return $.getJSON("http://www.mrdeng.site/api/admin/")
                 .fail(function() { throw "Data loading error" });
         },
         insert: function(event){
             return $.ajax({
-                url: "https://localhost:44398/api/admin/",
+                url: "http://www.mrdeng.site/api/admin/",
                 method:"POST",
                 data: { SeatId: $("#seats").children("option:selected").val(), startdate: event.startDate, enddate:event.endDate,CustomerId:event.text },
                 error: function(){throw "Insertion failed"}
@@ -18,7 +16,7 @@ $(function(){
         },
         update: function (key, values) {
             return $.ajax({
-                url: "https://localhost:44398/api/admin/"+values.description,
+                url: "http://www.mrdeng.site/api/admin/"+values.description,
                 method: "PUT",
                 data: {SeatId: $("#seats").children("option:selected").val(),SeatAvailabilityId:values.description, startdate: values.startDate, enddate:values.endDate,CustomerId:values.text},
                 error: function(){throw "Update failed"}
@@ -26,7 +24,7 @@ $(function(){
         },
         remove: function (key) {
             return $.ajax({
-                url: "https://localhost:44398/api/admin/"+key,
+                url: "http://www.mrdeng.site/api/admin/"+key,
                 method: "DELETE",
                 error: function(){throw "Deletion failed"}
             })

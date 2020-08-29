@@ -1,4 +1,7 @@
 $(function() {
+    var today = new Date();
+    var todate = today.getDate();
+
      $('#rangestart').calendar({
         today:true,
         touchReadonly:false,
@@ -10,6 +13,14 @@ $(function() {
               var month = date.getMonth() + 1;
               var year = date.getFullYear();
               return year + '-' + month + '-' + day;
+            }
+          },
+          onBeforeChange: function (date, text, mode) {
+            if (date.getHours() <8 || date.getHours() >22 ||date.getDate()< todate) {
+              $('body').toast({
+                message: '只有8点-22点对外开放。'
+              });
+              return false; // returning false prevents the selection
             }
           },
           text: {
@@ -34,6 +45,14 @@ $(function() {
               var month = date.getMonth() + 1;
               var year = date.getFullYear();
               return year + '-' + month + '-' + day;
+            }
+          },
+          onBeforeChange: function (date, text, mode) {
+            if (date.getHours() <8 || date.getHours() >22) {
+              $('body').toast({
+                message: '只有8点-22点对外开放.'
+              });
+              return false; // returning false prevents the selection
             }
           },
           text: {
@@ -100,17 +119,17 @@ $(function() {
             else if (visibleDiv ==$(".tab").length-1 ){
               var startT= $('#calstart').val();
               var endT = $('#calend').val();
-              var cell = $('Cell').val();
+              var cell = $('#Cell').val();
               try{
                 $.each(SeatId,function(index,value){
-                  //$.post("http://www.mrdeng.site/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"CustomerId":cell}).done (function(){
-                $.post("https://localhost:44398/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"CustomerId":cell}).done (function(){  
+                  $.post("http://www.mrdeng.site/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"Cell":cell}).done (function(){
+                //$.post("https://localhost:44398/api/SeatAvailabilities",{"SeatId":value,"enddate":endT,"startdate":startT,"Cell":cell}).done (function(){  
                   alert ("订座成功"); 
                   })
                   //console.log("index: "+index,"value: "+value);
                 })
-                //$.post( "http://www.mrdeng.site/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
-                $.post( "https://localhost:44398/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
+                $.post( "http://www.mrdeng.site/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
+                //$.post( "https://localhost:44398/api/payrequest",{"itemBody":"3333","subject":"邓老师自习室","totalAmount":Amount,"tradeno":"112"}).done(function(data){
                 const div = document.createElement('div');
                   div.innerHTML = data
                   document.body.appendChild(div);
@@ -175,8 +194,8 @@ $(function() {
           }
 
           function getAvailability(start,end){
-              //var seatAPI = "http://www.mrdeng.site/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
-              var seatAPI = "https://localhost:44398/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
+              var seatAPI = "http://www.mrdeng.site/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
+              //var seatAPI = "https://localhost:44398/api/SeatAvailabilities?startdate="+start+"&enddate="+end;
               $.get( seatAPI).done(function(data){
                 if($('#tab2').is(':visible')){
                   $.each(data,function(key,value){
@@ -187,6 +206,8 @@ $(function() {
                   })
                 }
 
+              }).fail(function() {
+                console.log( "no seats" );
               })
           }
 
